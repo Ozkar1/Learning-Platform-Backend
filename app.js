@@ -6,6 +6,12 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var apiRouter = require('./routes/api');
+
+const { sequelize } = require('./models/index');
+const User = require('./models/User');
+const authRoutes = require('./routes/auth');
+
 
 var app = express();
 
@@ -21,6 +27,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/api', apiRouter);
+app.use('/api/auth', authRoutes);
+
+sequelize.authenticate()
+  .then(() => console.log('Connection has been established successfully.'))
+  .catch(err => console.error('Unable to connect to the database:', err));
+
+  sequelize.sync({ force: true })
+  .then(() => console.log('Database & tables created!'))
+  .catch(err => console.error('Error creating database tables:', err));
+
+  
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

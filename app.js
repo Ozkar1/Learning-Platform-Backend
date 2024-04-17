@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
-app.use('/api/auth', authRoutes);
+app.use('/api/users', authRoutes);
 
 sequelize.authenticate()
   .then(() => console.log('Connection has been established successfully.'))

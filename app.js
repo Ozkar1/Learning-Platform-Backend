@@ -9,7 +9,6 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 
 const { sequelize } = require('./models/index');
-const seedUsers = require('./seed');
 const User = require('./models/User');
 const authRoutes = require('./routes/auth');
 const classroomsRoutes = require('./routes/classroom');
@@ -41,10 +40,8 @@ sequelize.authenticate()
   .catch(err => console.error('Unable to connect to the database:', err));
 
   sequelize.sync({ force: true })
-  .then(() => {
-    console.log('Database and tables created.');
-    seedUsers();  // Call the seed function
-}).catch(err => console.error('Error creating database tables:', err));
+  .then(() => console.log('Database & tables created!'))
+  .catch(err => console.error('Error creating database tables:', err));
 
   
 

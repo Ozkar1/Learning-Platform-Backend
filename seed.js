@@ -41,9 +41,7 @@ async function seedUsers() {
 }
 
 seedUsers().then(() => {
-  console.log('Seeding complete.');
-  sequelize.close(); // Close the connection after seeding
+  console.log('Seeding complete.');// Close the connection after seeding
 }).catch(err => {
   console.error('Failed to seed users:', err);
-  sequelize.close();
 });

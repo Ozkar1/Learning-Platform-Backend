@@ -10,7 +10,7 @@ const { Classroom, UserClassroom, User } = require('../models');  // Adjust path
 router.use(authenticateToken);
 
 // POST route to create a new classroom
-router.post('/create', checkTeacher, validateClassroomData, ClassroomController.createClassroom);
+router.post('/create', validateClassroomData, ClassroomController.createClassroom);
 
 router.get('/student/:studentId', async (req, res) => {
     const { studentId } = req.params;

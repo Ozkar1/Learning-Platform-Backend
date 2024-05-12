@@ -16,6 +16,8 @@ function authenticateToken(req, res, next) {
         if (err) {
             return res.sendStatus(403); // Invalid token
         }
+
+        console.log("Decoded JWT payload:", user);
         req.user = user; // Add user info to request
         next(); // Pass control to the next handler
     });

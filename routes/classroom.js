@@ -16,15 +16,16 @@ router.post('/create', validateClassroomData, ClassroomController.createClassroo
 router.delete('/delete/:id', ClassroomController.deleteClassroom);
 
 //Get the students classrooms
-router.get('/student/:studentId', ClassroomController.getClassroomsForStudent)
+router.get('/student', ClassroomController.getClassroomsForStudent)
 
 
 //Get teachers classrooms.
-router.get('/teacher/:teacherId', ClassroomController.getClassroomsForTeacher)
+router.get('/teacher', ClassroomController.getClassroomsForTeacher)
 
 //Enroll student into classroom
 router.post('/enroll', ClassroomController.enrollInClassroom)
-  
+
+router.post('/leave', ClassroomController.leaveClassroom)
   
 
 module.exports = router;

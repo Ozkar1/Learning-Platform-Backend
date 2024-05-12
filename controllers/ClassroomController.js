@@ -33,11 +33,11 @@ exports.createClassroom = async (req, res) => {
 };
 
 exports.deleteClassroom = async (req, res) => {
-    const { ClassroomID } = req.params;
-    const { UserID } = req.user.UserID;  // This should be set by your authentication middleware
+    const { id } = req.params;
+    const { UserID } = req.user; 
 
     try {
-        const classroom = await Classroom.findByPk(ClassroomID);
+        const classroom = await Classroom.findByPk(id);
         if (!classroom) {
             return res.status(404).json({ message: 'Classroom not found' });
         }
@@ -54,7 +54,7 @@ exports.deleteClassroom = async (req, res) => {
 };
 
 exports.getClassroomsForStudent = async (req, res) => {
-    const { studentId } = req.params;
+    const { studentId } = req.user.UserID;
   
     try {
         const studentClassrooms = await UserClassroom.findAll({
@@ -77,7 +77,7 @@ exports.getClassroomsForStudent = async (req, res) => {
 };
 
 exports.getClassroomsForTeacher = async (req, res) => {
-    const { teacherId } = req.params;
+    const { teacherId } = req.user.UserID;
   
     try {
         const classrooms = await Classroom.findAll({
@@ -96,10 +96,11 @@ exports.getClassroomsForTeacher = async (req, res) => {
 };
 
 exports.enrollInClassroom = async (req, res) => {
-    const { userID, joinCode } = req.body;
+    const { joinCode } = req.body;
+    const { UserID } = req.user;
   
     try {
-        const user = await User.findByPk(userID);
+        const user = await User.findByPk(UserID);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -111,7 +112,7 @@ exports.enrollInClassroom = async (req, res) => {
   
         const isEnrolled = await UserClassroom.findOne({
             where: {
-                UserID: userID,
+                UserID,
                 ClassroomID: classroom.ClassroomID
             }
         });
@@ -120,7 +121,7 @@ exports.enrollInClassroom = async (req, res) => {
         }
   
         await UserClassroom.create({
-            UserID: userID,
+            UserID,
             ClassroomID: classroom.ClassroomID
         });
   
@@ -134,5 +135,30 @@ exports.enrollInClassroom = async (req, res) => {
         });
     } catch (error) {
         res.status(500).json({ message: 'Error enrolling user: ' + error.message });
+    }
+};
+
+exports.leaveClassroom = async (req, res) => {
+    const { classroomID } = req.body; 
+    const { UserID } = req.user;
+
+    try {
+        // Check if the student is currently enrolled in the classroom
+        const userClassroom = await UserClassroom.findOne({
+            where: {
+                UserID,
+                ClassroomID: classroomID
+            }
+        });
+
+        if (!userClassroom) {
+            return res.status(404).json({ message: 'Enrollment not found or student is not in this classroom' });
+        }
+
+        // Delete the UserClassroom association
+        await userClassroom.destroy();
+        res.status(200).json({ message: 'Student has successfully left the classroom' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error leaving classroom: ' + error.message });
     }
 };

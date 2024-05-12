@@ -134,6 +134,7 @@ exports.enrollInClassroom = async (req, res) => {
             }
         });
     } catch (error) {
+        console.error("Error enrolling:", error);
         res.status(500).json({ message: 'Error enrolling user: ' + error.message });
     }
 };

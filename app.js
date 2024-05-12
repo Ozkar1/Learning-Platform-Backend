@@ -12,6 +12,7 @@ const { sequelize } = require('./models/index');
 const User = require('./models/User');
 const authRoutes = require('./routes/auth');
 const classroomsRoutes = require('./routes/classroom');
+const assignmentRoutes = require('./routes/assignment');
 
 
 
@@ -32,6 +33,7 @@ app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/api/users', authRoutes);
 app.use('/api/classrooms', classroomsRoutes);
+app.use('/api/assignments', assignmentRoutes);
 
 sequelize.authenticate()
   .then(() => console.log('Connection has been established successfully.'))

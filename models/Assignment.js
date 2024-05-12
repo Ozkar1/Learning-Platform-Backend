@@ -11,9 +11,9 @@ module.exports = (sequelize) => {
     Title: DataTypes.STRING,
     Description: DataTypes.STRING,
     DueDate: DataTypes.DATE,
-    TargetString: DataTypes.STRING,
-    MemoryResult: DataTypes.STRING,
-    RegisterResult: DataTypes.STRING,
+    ExpectedInput: DataTypes.STRING,
+    ExpectedMemory: DataTypes.STRING,
+    ExpectedRegister: DataTypes.STRING,
   }, {
     tableName: 'Assignments'
   });

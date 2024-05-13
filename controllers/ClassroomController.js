@@ -54,7 +54,7 @@ exports.deleteClassroom = async (req, res) => {
 };
 
 exports.getClassroomsForStudent = async (req, res) => {
-    const { studentId } = req.user.UserID;
+    const studentId  = req.user.UserID;
   
     try {
         const studentClassrooms = await UserClassroom.findAll({
@@ -67,7 +67,7 @@ exports.getClassroomsForStudent = async (req, res) => {
                     attributes: ['Username', 'Email']
                 }]
             }]
-        });
+        })
   
         const classrooms = studentClassrooms.map(uc => uc.Classroom);
         res.status(200).json(classrooms);
@@ -77,7 +77,7 @@ exports.getClassroomsForStudent = async (req, res) => {
 };
 
 exports.getClassroomsForTeacher = async (req, res) => {
-    const { teacherId } = req.user.UserID;
+    const teacherId = req.user.UserID;
   
     try {
         const classrooms = await Classroom.findAll({
@@ -88,7 +88,7 @@ exports.getClassroomsForTeacher = async (req, res) => {
                 attributes: ['Username', 'Email']
             }]
         });
-  
+
         res.status(200).json(classrooms);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching classrooms: ' + error.message });

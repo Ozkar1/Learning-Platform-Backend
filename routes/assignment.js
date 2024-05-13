@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AssignmentController = require('../controllers/AssignmentController');
+const authenticateToken = require('../middleware/authenticateToken');
 
 
 router.use(authenticateToken);

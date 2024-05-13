@@ -14,11 +14,14 @@ const Assignment = require('./Assignment')(sequelize);
 const CompletedAssignment = require('./CompletedAssignment')(sequelize);
 
 // Define relationships
-User.hasMany(Classroom, { foreignKey: 'OwnerID' });
-Classroom.belongsTo(User, { foreignKey: 'OwnerID' });
+User.hasMany(Classroom, { foreignKey: 'OwnerID', as: 'OwnedClassrooms' });
+Classroom.belongsTo(User, { foreignKey: 'OwnerID', as: 'Owner' });
 
-User.belongsToMany(Classroom, { through: UserClassroom, foreignKey: 'UserID', otherKey: 'ClassroomID' });
-Classroom.belongsToMany(User, { through: UserClassroom, foreignKey: 'ClassroomID', otherKey: 'UserID' });
+User.belongsToMany(Classroom, { through: UserClassroom, foreignKey: 'UserID', otherKey: 'ClassroomID', as: 'EnrolledClassrooms' });
+Classroom.belongsToMany(User, { through: UserClassroom, foreignKey: 'ClassroomID', otherKey: 'UserID', as: 'EnrolledUsers' });
+
+Classroom.hasMany(UserClassroom, { foreignKey: 'ClassroomID' });
+UserClassroom.belongsTo(Classroom, { foreignKey: 'ClassroomID' });
 
 Assignment.belongsTo(Classroom, { foreignKey: 'ClassroomID' });
 Classroom.hasMany(Assignment, { foreignKey: 'ClassroomID' });

@@ -1,4 +1,4 @@
-const { Assignment, CompletedAssignment } = require('../models/index');
+const { Assignment, CompletedAssignment, Classroom, UserClassroom} = require('../models/index');
 
 exports.createAssignment = async (req, res) => {
     try {

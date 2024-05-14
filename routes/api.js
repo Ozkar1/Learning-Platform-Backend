@@ -7,7 +7,8 @@ const jwt = require('jsonwebtoken');
 
 
 router.get('/profile', authenticateToken, async (req, res) => {
-  const user = await User.findByPk(req.user.id);
+  const { UserID } = req.user; 
+  const user = await User.findByPk(UserID);
   if (!user) {
       return res.status(404).send('User not found');
   }

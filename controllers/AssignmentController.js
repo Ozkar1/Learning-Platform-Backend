@@ -1,3 +1,4 @@
+const { and } = require('sequelize');
 const { Assignment, CompletedAssignment, Classroom, UserClassroom} = require('../models/index');
 
 exports.createAssignment = async (req, res) => {
@@ -62,7 +63,14 @@ exports.getAssignmentsForClassroom = async (req, res) => {
             }
         });
 
-        if (!isEnrolled) {
+        const isOwner = await Classroom.findOne({
+            where: {
+                OwnerID: UserID,
+                ClassroomID: classroomID
+            }
+        })
+
+        if (!isEnrolled && !isOwner) {
             return res.status(403).json({ message: 'You are not enrolled in this classroom.' });
         }
 

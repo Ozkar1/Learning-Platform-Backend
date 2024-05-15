@@ -11,6 +11,9 @@ var apiRouter = require('./routes/api');
 const { sequelize } = require('./models/index');
 const User = require('./models/User');
 const authRoutes = require('./routes/auth');
+const classroomsRoutes = require('./routes/classroom');
+const assignmentRoutes = require('./routes/assignment');
+
 
 
 var app = express();
@@ -29,12 +32,14 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter);
 app.use('/api/users', authRoutes);
+app.use('/api/classrooms', classroomsRoutes);
+app.use('/api/assignments', assignmentRoutes);
 
 sequelize.authenticate()
   .then(() => console.log('Connection has been established successfully.'))
   .catch(err => console.error('Unable to connect to the database:', err));
 
-  sequelize.sync({ force: true })
+  sequelize.sync({ force: false })
   .then(() => console.log('Database & tables created!'))
   .catch(err => console.error('Error creating database tables:', err));
 

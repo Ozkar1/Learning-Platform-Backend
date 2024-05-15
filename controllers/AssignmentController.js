@@ -100,8 +100,8 @@ exports.submitAssignment = async (req, res) => {
         }
 
         // Check if the submission matches the expected results
-        const isCorrect = (assignment.ExpectedInput === input &&
-                           assignment.ExpectedMemory === memory &&
+        const isCorrect = (assignment.ExpectedInput === input ||
+                           assignment.ExpectedMemory === memory ||
                            assignment.ExpectedRegister === register);
 
         if (isCorrect) {

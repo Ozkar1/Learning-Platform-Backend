@@ -21,4 +21,7 @@ router.post('/submit', AssignmentController.submitAssignment);
 // Route to submit an assignment
 //router.post('/submit', AssignmentController.submitAssignment);
 
+router.get('/:assignmentID/completions', AssignmentController.getCompletionStatus);
+
+
 module.exports = router;

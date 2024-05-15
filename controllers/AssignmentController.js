@@ -1,5 +1,5 @@
 const { and } = require('sequelize');
-const { Assignment, CompletedAssignment, Classroom, UserClassroom} = require('../models/index');
+const { Assignment, CompletedAssignment, Classroom, UserClassroom, User} = require('../models/index');
 
 exports.createAssignment = async (req, res) => {
     try {
@@ -91,12 +91,24 @@ exports.getAssignmentsForClassroom = async (req, res) => {
 
 exports.submitAssignment = async (req, res) => {
     const { AssignmentID, input, memory, register } = req.body;
-    const {UserID} = req.user;
+    const { UserID } = req.user;
 
     try {
         const assignment = await Assignment.findByPk(AssignmentID);
         if (!assignment) {
             return res.status(404).send('Assignment not found.');
+        }
+
+        // Check if the user has already completed the assignment
+        const existingCompletion = await CompletedAssignment.findOne({
+            where: {
+                AssignmentID,
+                UserID
+            }
+        });
+
+        if (existingCompletion) {
+            return res.status(400).json({ message: "You have already completed this assignment." });
         }
 
         // Check if the submission matches the expected results
@@ -118,3 +130,44 @@ exports.submitAssignment = async (req, res) => {
         res.status(500).send('Server error: ' + error.message);
     }
 };
+
+exports.getCompletionStatus = async (req, res) => {
+    const { assignmentID } = req.params;
+    const { UserID } = req.user; // Assuming user info is set by authentication middleware
+
+    try {
+        // Fetch the assignment to get the ClassroomID and verify existence
+        const assignment = await Assignment.findOne({
+            where: { AssignmentID: assignmentID }
+        });
+
+        if (!assignment) {
+            return res.status(404).json({ message: 'Assignment not found.' });
+        }
+
+        // Check if the user is the owner of the classroom associated with the assignment
+        const classroom = await Classroom.findOne({
+            where: {
+                ClassroomID: assignment.ClassroomID,
+                OwnerID: UserID
+            }
+        });
+
+        if (!classroom) {
+            return res.status(403).json({ message: 'You do not have permission to view this information.' });
+        }
+
+        // Get the users who have completed the assignment
+        const completions = await CompletedAssignment.findAll({
+            where: { AssignmentID: assignmentID },
+            include: [{ model: User, attributes: ['UserID', 'Username', 'FullName'] }]
+        });
+
+        const completedUsers = completions.map(completion => completion.User);
+
+        res.status(200).json(completedUsers);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching completion status: ' + error.message });
+    }
+};
+

@@ -1,0 +1,7 @@
+runtime: nodejs20
+
+env_variables:
+  DB_USER: 'oskar'
+  DB_PASS: 'Random123#'
+  DB_NAME: 'vole-database'
+  DB_SOCKET_PATH: '/cloudsql/sunlit-inn-423416-r4:europe-west1:mysql-db'

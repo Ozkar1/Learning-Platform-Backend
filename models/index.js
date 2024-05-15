@@ -1,10 +1,13 @@
 const Sequelize = require('sequelize');
 
 
-// Set up the connection (Adjust these parameters with your actual MySQL configuration)
-const sequelize = new Sequelize('local_db', 'boskar', 'Vct73wje123', {
-  host: 'localhost',
-  dialect: 'mysql'
+// Set up the connection using environment variables
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+  host: process.env.DB_HOST || 'localhost',
+  dialect: 'mysql',
+  dialectOptions: {
+    socketPath: process.env.DB_SOCKET_PATH // required for Cloud SQL connection
+  }
 });
 
 const User = require('./User')(sequelize);

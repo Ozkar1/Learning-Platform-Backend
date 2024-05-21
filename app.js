@@ -1,3 +1,4 @@
+require('dotenv').config();
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -13,6 +14,7 @@ const User = require('./models/User');
 const authRoutes = require('./routes/auth');
 const classroomsRoutes = require('./routes/classroom');
 const assignmentRoutes = require('./routes/assignment');
+
 
 
 

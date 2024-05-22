@@ -71,6 +71,4 @@ describe('Auth Routes', () => {
     expect(response.status).to.equal(201);
     expect(response.body).to.have.property('user');
   });
-
-  // More tests for auth routes
 });

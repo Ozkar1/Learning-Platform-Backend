@@ -80,8 +80,6 @@ describe('AuthController', () => {
       expect(res.status.calledWith(404)).to.be.true;
       expect(res.json.calledWithMatch({ message: 'User not found' })).to.be.true;
     });
-
-    // More tests for login
   });
 
   describe('register', () => {
@@ -144,7 +142,5 @@ describe('AuthController', () => {
       expect(res.status.calledWith(400)).to.be.true;
       expect(res.json.calledWithMatch({ message: 'User already exists with this email or username.' })).to.be.true;
     });
-
-    // More tests for register
   });
 });

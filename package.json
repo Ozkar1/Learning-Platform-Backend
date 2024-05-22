@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "mocha 'test/**/*.test.js'"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -17,5 +18,11 @@
     "morgan": "~1.9.1",
     "mysql2": "^3.9.4",
     "sequelize": "^6.37.3"
+  },
+  "devDependencies": {
+    "chai": "^5.1.1",
+    "mocha": "^10.4.0",
+    "sinon": "^18.0.0",
+    "supertest": "^7.0.0"
   }
 }

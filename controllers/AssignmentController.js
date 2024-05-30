@@ -160,7 +160,7 @@ exports.getCompletionStatus = async (req, res) => {
         // Get the users who have completed the assignment
         const completions = await CompletedAssignment.findAll({
             where: { AssignmentID: assignmentID },
-            include: [{ model: User, attributes: ['UserID', 'Username', 'FullName'] }]
+            include: [{ model: User, attributes: ['UserID', 'Username', 'FirstName', 'LastName'] }]
         });
 
         const completedUsers = completions.map(completion => completion.User);

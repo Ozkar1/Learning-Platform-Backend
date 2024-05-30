@@ -32,6 +32,9 @@ Classroom.hasMany(Assignment, { foreignKey: 'ClassroomID' });
 User.belongsToMany(Assignment, { through: CompletedAssignment, foreignKey: 'UserID', otherKey: 'AssignmentID' });
 Assignment.belongsToMany(User, { through: CompletedAssignment, foreignKey: 'AssignmentID', otherKey: 'UserID' });
 
+CompletedAssignment.belongsTo(User, { foreignKey: 'UserID' });
+CompletedAssignment.belongsTo(Assignment, { foreignKey: 'AssignmentID' });
+
 module.exports = {
   sequelize,
   User,
